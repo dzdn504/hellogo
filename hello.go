@@ -7,11 +7,26 @@ import (
 func main() {
 	// var s = greeting.Salutation{"Bob", "Hello"}
 
-	slice := []greeting.Salutation{
+	// var s []int
+	// s = make([]int, 3)
+	// s[0] = 1
+	// s[1] = 10
+	// s[2] = 12
+
+	// v := []int{1, 10, 12}
+
+	salutations := greeting.Salutations{
 		{"Bob", "Hello"},
-		{"Mary", "What's goood!?"},
 		{"Joe", "Yo dawg"},
+		{"Mary", "What's goood!?"},
 	}
 
-	greeting.Greet(slice, greeting.CreatePrintFunction("?"), true, 5)
+	salutations[0].RenameWithoutPointer("John")
+	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+
+	salutations[0].Rename("John")
+	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+
+	salutations[0] = salutations[0].RenameWithoutPointerReturn("Johnny")
+	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
 }

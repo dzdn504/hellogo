@@ -9,10 +9,25 @@ type Salutation struct {
 	Greeting string
 }
 
+func (salutation *Salutation) Rename(newName string) {
+	salutation.Name = newName
+}
+
+func (salutation Salutation) RenameWithoutPointer(newName string) {
+	salutation.Name = newName
+}
+
+func (salutation Salutation) RenameWithoutPointerReturn(newName string) (s Salutation) {
+	salutation.Name = newName
+	return salutation
+}
+
+type Salutations []Salutation
+
 type Printer func(string)
 
-func Greet(saluation []Salutation, do Printer, isFormal bool, times int) {
-	for _, s := range saluation {
+func (salutations Salutations) Greet(do Printer, isFormal bool, times int) {
+	for _, s := range salutations {
 		message, alternate := CreateMessage(s.Name, s.Greeting)
 
 		if prefix := GetPrefix(s.Name); isFormal {

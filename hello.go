@@ -1,8 +1,14 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/dzdn504/hellogo/greeting"
 )
+
+func RenameToFrog(r greeting.Renamable) {
+	r.Rename("Frog")
+}
 
 func main() {
 	// var s = greeting.Salutation{"Bob", "Hello"}
@@ -29,4 +35,11 @@ func main() {
 
 	salutations[0] = salutations[0].RenameWithoutPointerReturn("Johnny")
 	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+
+	RenameToFrog(&salutations[0])
+	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+
+	fmt.Fprintf(&salutations[0], "The count is %d", 10)
+	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+
 }

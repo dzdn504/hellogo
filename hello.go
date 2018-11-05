@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/dzdn504/hellogo/greeting"
 )
@@ -28,29 +27,44 @@ func main() {
 		{"Mary", "What's goood!?"},
 	}
 
-	salutations[0].RenameWithoutPointer("John")
-	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	// fmt.Println("*********************************************")
+	// salutations[0].RenameWithoutPointer("John")
+	// salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	//
+	// fmt.Println("*********************************************")
+	// salutations[0].Rename("John")
+	// salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	//
+	// fmt.Println("*********************************************")
+	// salutations[0] = salutations[0].RenameWithoutPointerReturn("Johnny")
+	// salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	//
+	// fmt.Println("*********************************************")
+	// RenameToFrog(&salutations[0])
+	// salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
 
-	salutations[0].Rename("John")
-	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	// fmt.Println("*********************************************")
+	// fmt.Fprintf(&salutations[0], "The count is %d", 10)
+	//
+	// done := make(chan bool, 2)
+	// go func() {
+	// 	salutations.Greet(greeting.CreatePrintFunction("<C>"), true, 5)
+	// 	done <- true
+	// 	time.Sleep(100 * time.Millisecond)
+	// 	done <- true
+	// 	fmt.Println("Done!")
+	// }()
 
-	salutations[0] = salutations[0].RenameWithoutPointerReturn("Johnny")
-	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	// salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	// <-done
 
-	RenameToFrog(&salutations[0])
-	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
-
+	fmt.Println("*********************************************")
 	fmt.Fprintf(&salutations[0], "The count is %d", 10)
+	c := make(chan greeting.Salutation)
+	// Call a goroutine that will fill the channel
+	go salutations.ChannelGreeter(c)
 
-	done := make(chan bool, 2)
-	go func() {
-		salutations.Greet(greeting.CreatePrintFunction("<C>"), true, 5)
-		done <- true
-		time.Sleep(100 * time.Millisecond)
-		done <- true
-		fmt.Println("Done!")
-	}()
-
-	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
-	<-done
+	for s := range c {
+		fmt.Println(s.Name)
+	}
 }

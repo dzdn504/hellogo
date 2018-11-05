@@ -39,6 +39,13 @@ type Salutations []Salutation
 
 type Printer func(string)
 
+func (salutations Salutations) ChannelGreeter(c chan Salutation) {
+	for _, s := range salutations {
+		c <- s
+	}
+	close(c)
+}
+
 func (salutations Salutations) Greet(do Printer, isFormal bool, times int) {
 	for _, s := range salutations {
 		message, alternate := CreateMessage(s.Name, s.Greeting)

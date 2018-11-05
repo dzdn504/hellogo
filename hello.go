@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/dzdn504/hellogo/greeting"
 )
@@ -40,6 +41,16 @@ func main() {
 	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
 
 	fmt.Fprintf(&salutations[0], "The count is %d", 10)
-	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
 
+	done := make(chan bool, 2)
+	go func() {
+		salutations.Greet(greeting.CreatePrintFunction("<C>"), true, 5)
+		done <- true
+		time.Sleep(100 * time.Millisecond)
+		done <- true
+		fmt.Println("Done!")
+	}()
+
+	salutations.Greet(greeting.CreatePrintFunction("?"), true, 5)
+	<-done
 }
